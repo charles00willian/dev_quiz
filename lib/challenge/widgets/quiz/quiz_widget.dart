@@ -23,8 +23,8 @@ class QuizWidget extends StatelessWidget {
             child: AnswerWidget(
               title:
                   "Possibilita a criação de aplicativos compilados nativamente",
-              isRight: false,
-              isSelected: true,
+              // isRight: false,
+              // isSelected: true,
             ),
           ),
           Padding(
@@ -33,7 +33,7 @@ class QuizWidget extends StatelessWidget {
               title:
                   "Possibilita a criação de aplicativos compilados nativamente",
               isRight: false,
-              isSelected: true,
+              isSelected: false,
             ),
           ),
           Padding(
@@ -41,7 +41,7 @@ class QuizWidget extends StatelessWidget {
             child: AnswerWidget(
               title:
                   "Possibilita a criação de aplicativos compilados nativamente",
-              isRight: false,
+              isRight: true,
               isSelected: true,
             ),
           ),
