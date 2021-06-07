@@ -40,13 +40,16 @@ class AppBarWidget extends PreferredSize {
                           decoration: BoxDecoration(
                             borderRadius: BorderRadius.circular(10),
                             image: DecorationImage(
-                                image: NetworkImage(
-                                    "https://avatars.githubusercontent.com/u/32883426?v=4")),
+                                image: NetworkImage(user.photoUrl)),
                           ),
                         ),
                       ]),
                 ),
-                Align(alignment: Alignment(0.0, 1.0), child: ScoreCardWidget())
+                Align(
+                    alignment: Alignment(0.0, 1.0),
+                    child: ScoreCardWidget(
+                      score: user.score,
+                    ))
               ],
             ),
           ),
