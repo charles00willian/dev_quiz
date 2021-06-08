@@ -4,13 +4,17 @@ import 'package:dev_quiz/challenge/challenge_controller.dart';
 import 'package:dev_quiz/challenge/widgets/next_button/next_button_widget.dart';
 import 'package:dev_quiz/challenge/widgets/question_indicator/question_indicator_widget.dart';
 import 'package:dev_quiz/challenge/widgets/quiz/quiz_widget.dart';
+import 'package:dev_quiz/result/result_page.dart';
 import 'package:flutter/material.dart';
 
 class ChallengePage extends StatefulWidget {
   final List<QuestionModel> questions;
+  final String title;
+
   const ChallengePage({
     Key? key,
     required this.questions,
+    required this.title,
   }) : super(key: key);
 
   @override
@@ -46,6 +50,13 @@ class _ChallengePageState extends State<ChallengePage> {
       );
   }
 
+  void onSelected(bool value) {
+    if (value) {
+      controller.score++;
+    }
+    goToNextPage();
+  }
+
   bool isLast(int value) {
     return value == widget.questions.length;
   }
@@ -79,9 +90,9 @@ class _ChallengePageState extends State<ChallengePage> {
             .map(
               (e) => QuizWidget(
                 question: e,
-                onChange: () async {
+                onSelected: (value) async {
                   await Future.delayed(Duration(seconds: 1));
-                  goToNextPage();
+                  onSelected(value);
                 },
               ),
             )
@@ -111,7 +122,16 @@ class _ChallengePageState extends State<ChallengePage> {
                           child: NextButtonWidget.green(
                             label: "Confirmar",
                             onTap: () {
-                              Navigator.pop(context);
+                              Navigator.pushReplacement(
+                                context,
+                                MaterialPageRoute(
+                                  builder: (context) => ResultPage(
+                                    title: widget.title,
+                                    length: widget.questions.length,
+                                    score: controller.score,
+                                  ),
+                                ),
+                              );
                             },
                           ),
                         ),
