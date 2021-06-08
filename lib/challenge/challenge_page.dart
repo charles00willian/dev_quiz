@@ -38,6 +38,18 @@ class _ChallengePageState extends State<ChallengePage> {
     super.initState();
   }
 
+  void goToNextPage() {
+    if (!isLast(controller.currentPage))
+      pageController.nextPage(
+        duration: Duration(milliseconds: 200),
+        curve: Curves.linear,
+      );
+  }
+
+  bool isLast(int value) {
+    return value == widget.questions.length;
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -67,6 +79,10 @@ class _ChallengePageState extends State<ChallengePage> {
             .map(
               (e) => QuizWidget(
                 question: e,
+                onChange: () async {
+                  await Future.delayed(Duration(seconds: 1));
+                  goToNextPage();
+                },
               ),
             )
             .toList(),
@@ -75,32 +91,32 @@ class _ChallengePageState extends State<ChallengePage> {
         padding: const EdgeInsets.only(left: 20, right: 20, bottom: 5),
         child: SafeArea(
           bottom: true,
-          child: Row(
-            mainAxisAlignment: MainAxisAlignment.spaceAround,
-            children: [
-              Expanded(
-                child: NextButtonWidget.white(
-                  label: "Pular",
-                  borderColor: AppColors.border,
-                  onTap: () {
-                    pageController.nextPage(
-                      duration: Duration(milliseconds: 200),
-                      curve: Curves.linear,
-                    );
-                  },
-                ),
-              ),
-              SizedBox(
-                width: 6,
-              ),
-              Expanded(
-                child: NextButtonWidget.green(
-                  label: "Confirmar",
-                  onTap: () {},
-                ),
-              ),
-            ],
-          ),
+          child: ValueListenableBuilder<int>(
+              valueListenable: controller.currentPageNotifier,
+              builder: (context, value, _) => Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceAround,
+                    children: [
+                      if (!isLast(value))
+                        Expanded(
+                          child: NextButtonWidget.white(
+                            label: "Pular",
+                            borderColor: AppColors.border,
+                            onTap: () {
+                              goToNextPage();
+                            },
+                          ),
+                        ),
+                      if (isLast(value))
+                        Expanded(
+                          child: NextButtonWidget.green(
+                            label: "Confirmar",
+                            onTap: () {
+                              Navigator.pop(context);
+                            },
+                          ),
+                        ),
+                    ],
+                  )),
         ),
       ),
     );

@@ -6,12 +6,14 @@ class AnswerWidget extends StatelessWidget {
   final AnswerModel answer;
   final bool isSelected;
   final VoidCallback onTap;
+  final bool disabled;
 
   const AnswerWidget({
     Key? key,
     this.isSelected = false,
     required this.answer,
     required this.onTap,
+    this.disabled = false,
   }) : super(key: key);
 
   Color get _selectedColorRight =>
@@ -33,50 +35,55 @@ class AnswerWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return GestureDetector(
-      onTap: onTap,
-      child: Container(
-        padding: EdgeInsets.all(16),
-        decoration: BoxDecoration(
-          color: isSelected ? _selectedCardRight : AppColors.white,
-          borderRadius: BorderRadius.circular(10),
-          border: Border.fromBorderSide(
-            (BorderSide(
-                color:
-                    isSelected ? _selectedBorderCardRight : AppColors.border)),
-          ),
-        ),
-        child: Row(
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          children: [
-            Expanded(
-              child: Text(
-                answer.title,
-                style:
-                    isSelected ? _selectedTextStyleRight : AppTextStyles.body,
-              ),
+    return IgnorePointer(
+      ignoring: disabled,
+      child: GestureDetector(
+        onTap: onTap,
+        child: Container(
+          padding: EdgeInsets.all(16),
+          decoration: BoxDecoration(
+            color: isSelected ? _selectedCardRight : AppColors.white,
+            borderRadius: BorderRadius.circular(10),
+            border: Border.fromBorderSide(
+              (BorderSide(
+                  color: isSelected
+                      ? _selectedBorderCardRight
+                      : AppColors.border)),
             ),
-            Container(
-              width: 24,
-              height: 24,
-              child: isSelected
-                  ? Icon(
-                      _selectedIconRight,
-                      size: 16,
-                      color: Colors.white,
-                    )
-                  : null,
-              decoration: BoxDecoration(
-                color: isSelected ? _selectedColorRight : AppColors.border,
-                borderRadius: BorderRadius.circular(500),
-                border: Border.fromBorderSide(
-                  (BorderSide(
-                    color: isSelected ? _selectedBorderRight : AppColors.border,
-                  )),
+          ),
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              Expanded(
+                child: Text(
+                  answer.title,
+                  style:
+                      isSelected ? _selectedTextStyleRight : AppTextStyles.body,
                 ),
               ),
-            ),
-          ],
+              Container(
+                width: 24,
+                height: 24,
+                child: isSelected
+                    ? Icon(
+                        _selectedIconRight,
+                        size: 16,
+                        color: Colors.white,
+                      )
+                    : null,
+                decoration: BoxDecoration(
+                  color: isSelected ? _selectedColorRight : AppColors.border,
+                  borderRadius: BorderRadius.circular(500),
+                  border: Border.fromBorderSide(
+                    (BorderSide(
+                      color:
+                          isSelected ? _selectedBorderRight : AppColors.border,
+                    )),
+                  ),
+                ),
+              ),
+            ],
+          ),
         ),
       ),
     );
